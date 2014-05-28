@@ -14,7 +14,8 @@ block content
     div.alert.alert-danger= 'Error: ' + error.message
 
   div.container
-    form.form-horizontal(method="post", id="search")
+    form.form-horizontal(method="get", id="search")
+      input(type="hidden",name="action",value="search")
       div.form-group
         label.col-sm-2.control-label Product Name
         div.col-sm-10

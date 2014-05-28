@@ -20,26 +20,27 @@ table#results.table.table-striped.table-bordered
       tr
         td(colspan='5') No products found.
 
-- var maxPages = (results.totalPages > 10 ? 10 : results.totalPages)
-div.center-block.text-center
-  ul.pagination
-    if results.currentPage == 1
-      li: span &laquo;
-    else
-      li: a(href='?page='+(results.currentPage-1)) &laquo;
+if (results.totalPages > 1)
+  - var maxPages = (results.totalPages > 10 ? 10 : results.totalPages)
+  div.center-block.text-center
+    ul.pagination
+      if results.currentPage == 1
+        li: span &laquo;
+      else
+        li: a(href=currentURL+"&page="+(results.currentPage-1)) &laquo;
 
-    - for (var x = 1; x <= maxPages; x++)
-        if x == results.currentPage
-          li.active: a(href="?page="+x)= x
-            span.sr-only (current)
-        else
-          li: a(href="?page="+x)= x
+      - for (var x = 1; x <= maxPages; x++)
+          if x == results.currentPage
+            li.active: a(href=currentURL+"&page="+x)= x
+              span.sr-only (current)
+          else
+            li: a(href=currentURL+"&page="+x)= x
 
-    if results.totalPages > 10
-      li: span.disabled &hellip;
-      li: a(href="?page="+results.totalPages)= results.totalPages
+      if results.totalPages > 10
+        li: span.disabled &hellip;
+        li: a(href=currentURL+"&page="+results.totalPages)= results.totalPages
 
-    if results.currentPage == results.totalPages
-      li: span &raquo;
-    else
-      li: a(href='?page='+(results.currentPage+1)) &raquo;
+      if results.currentPage == results.totalPages
+        li: span &raquo;
+      else
+        li: a(href=currentURL+"&page="+(results.currentPage+1)) &raquo;
