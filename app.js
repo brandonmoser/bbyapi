@@ -5,15 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
-//TODO: load dotenv & ENV file
+var dotenv = require('dotenv');
+    dotenv.load();
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
 
 app.set('title', 'BBY Open Products API ');
-app.set('APIKey', 'x9d2tth64c72apunekx59ed7'); //TODO: pull value from ENV file
+app.set('APIKey', process.env.APIKey);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
