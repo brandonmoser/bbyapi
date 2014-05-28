@@ -1,0 +1,45 @@
+div.well.well-sm= results.total + ' items found in ' + results.totalTime + ' seconds.'
+
+table#results.table.table-striped.table-bordered
+  thead
+    tr
+      th Image
+      th Name
+      th Sale Price
+      th Regular Price
+      th MarketPlace Item
+  tbody
+    - for product in results.products
+      tr
+        td: img(src=product.thumbnailImage)
+        td= (product.new ? 'NEW!' : '') + product.name
+        td= '$' + Math.round(product.salePrice*100)/100
+        td= '$' + Math.round(product.regularPrice*100)/100
+        td= (product.marketplace ? 'Yes' : 'No')
+    else
+      tr
+        td(colspan='5') No products found.
+
+- var maxPages = (results.totalPages > 10 ? 10 : results.totalPages)
+div.center-block.text-center
+  ul.pagination
+    if results.currentPage == 1
+      li: span &laquo;
+    else
+      li: a(href='?page='+(results.currentPage-1)) &laquo;
+
+    - for (var x = 1; x <= maxPages; x++)
+        if x == results.currentPage
+          li.active: a(href="?page="+x)= x
+            span.sr-only (current)
+        else
+          li: a(href="?page="+x)= x
+
+    if results.totalPages > 10
+      li: span.disabled &hellip;
+      li: a(href="?page="+results.totalPages)= results.totalPages
+
+    if results.currentPage == results.totalPages
+      li: span &raquo;
+    else
+      li: a(href='?page='+(results.currentPage+1)) &raquo;

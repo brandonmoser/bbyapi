@@ -1,26 +1,63 @@
 extends layout
 
-block content
-  div.top
-    form.form-horizontal(method="post", id="loginForm")
-      label Username
-      input.span3(id="username", type="text", name="User", placeholder="Enter your username")
-      label Password
-      input.span3(id="password", type="password", name="Password")
-      input.btn(type="submit", value="Log In")
-  div.container
-    div.content
-      table.table.table-striped
-        thead
-          tr
-            th Table
-            th Heading
-        tbody
-          tr
-            td Blah
-            td Test
-          tr
-            td Hello
-            td World
+//
+  * minimum-price - Number that should be the lower end of the product prices returned
+  * maximum-price - Number that should be the upper end of the product prices returned
+  * marketplace - Boolean for whether-or-not returned items come from the BBY marketplace
+  * new - Boolean for whether-or-not to include include "new" items
+  * keyword - String that searches product name
+  * per-page - Default 100
+  * page - Default 1 (count starts at 1)
 
-  div.footer
+block content
+  if error && error.message != undefined
+    div.alert.alert-danger= 'Error: ' + error.message
+
+  div.container
+    form.form-horizontal(method="post", id="search")
+      div.form-group
+        label.col-sm-2.control-label Product Name
+        div.col-sm-10
+          input.form-control(id="keyword", type="text", name="keyword", value=keyword)
+      div.form-group
+        label.col-sm-2.control-label Minimum Price
+        div.input-group.col-sm-10
+          span.input-group-addon $
+          input.form-control(id="priceMin", type="text", name="priceMin", value=priceMin)
+          span.input-group-addon .00
+      div.form-group
+        label.col-sm-2.control-label Maximum Price
+        div.input-group.col-sm-10
+          span.input-group-addon $
+          input.form-control(id="priceMax", type="text", name="priceMax", value=priceMax)
+          span.input-group-addon .00
+      div.form-group
+        div.col-sm-offset-2.col-sm-10
+          div.checkbox
+            label
+              input(id="marketplace", type='checkbox', checked=marketplace, name="marketplace")
+              | Show MarketPlace Items
+      div.form-group
+        div.col-sm-offset-2.col-sm-10
+          div.checkbox
+            label
+              input(id="newOnly", type='checkbox', checked=newOnly, name="newOnly")
+              | Filter to Only New Items (within 30 days)
+      // pageSize
+      div.form-group
+        label.col-sm-2.control-label Items Per Page
+        div.input-group.col-sm-10
+          select.form-control(name="pageSize")
+            - for (var x = 10; x <= 100; x+=10)
+              option(value=x, selected=(x==pageSize))= x
+      div.form-group
+        div.col-sm-offset-2.col-sm-10
+          input#search.btn.btn-primary(type="submit", value="Search", data-loading-text="Searching...")
+
+      // include results if !null
+      if results
+        include includes/results
+      else
+        // no results
+
+
